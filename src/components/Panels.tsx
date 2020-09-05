@@ -15,22 +15,33 @@ import {
   Flex,
   Heading,
   Text,
+  As,
 } from "@chakra-ui/core";
-import { FaUser, FaAngleRight } from "react-icons/fa";
+import {
+  FaUser,
+  FaCog,
+  FaLock,
+  FaGlobeAmericas,
+  FaAngleRight,
+  FaQuestionCircle,
+  FaCommentAlt,
+  FaInfoCircle,
+  FaLightbulb,
+} from "react-icons/fa";
 
 interface PanelItemProps {
-  icon: any;
+  name: As;
   title: string;
   description: string;
 }
 
-const PanelItem = ({ icon, title, description }: PanelItemProps) => {
+const PanelItem = ({ name, title, description }: PanelItemProps) => {
   return (
     <Flex p={2} my={4} align="center" alignContent="space-between">
       <Box>
-        <Icon as={icon} boxSize={6} color="#485363" />
+        <Icon as={name} boxSize={6} color="#485363" />
       </Box>
-      <Box mx={4} maxWidth="140px">
+      <Box mx={4} width="140px">
         <Heading fontSize="16px">{title}</Heading>
         <Text fontSize="14px" color="gray.500" isTruncated>
           {description}
@@ -68,43 +79,47 @@ const SettingsPanel = ({
           <DrawerBody>
             <Input placeholder="Type here..." />
             <PanelItem
-              icon="FaUser"
+              name={FaUser}
               title="Account"
               description="Profile, security, activity, account"
             />
             <PanelItem
-              icon="FaUser"
+              name={FaCog}
               title="General settings"
               description="Site language, notifications"
             />
             <PanelItem
-              icon="FaUser"
+              name={FaLock}
               title="Privacy"
               description="Mentions, visibility, data..."
             />
             <PanelItem
-              icon="FaUser"
+              name={FaUser}
               title="Feed preferences"
               description="Languages, blocked users"
             />
-            <PanelItem icon="FaUser" title="Language" description="Language" />
             <PanelItem
-              icon="FaUser"
+              name={FaGlobeAmericas}
+              title="Language"
+              description="Language"
+            />
+            <PanelItem
+              name={FaQuestionCircle}
               title="Help & support"
               description="FAQ, privacy policy"
             />
             <PanelItem
-              icon="FaUser"
+              name={FaCommentAlt}
               title="Feedback"
               description="Contact us"
             />
             <PanelItem
-              icon="FaUser"
+              name={FaInfoCircle}
               title="About lobox"
               description="Anyone on or off lobox"
             />
             <PanelItem
-              icon="FaUser"
+              name={FaLightbulb}
               title="Dark mode"
               description="Anyone on or off lobox"
             />

@@ -77,7 +77,6 @@ const SettingsPanel = ({
           <DrawerCloseButton />
           <DrawerHeader>Manage your lobox</DrawerHeader>
           <DrawerBody>
-            <Input placeholder="Type here..." />
             <PanelItem
               name={FaUser}
               title="Account"

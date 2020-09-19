@@ -17,7 +17,7 @@ import {
   Text,
   As,
   Skeleton,
-  SkeletonText,
+  SkeletonText
 } from "@chakra-ui/core";
 import {
   FaUser,
@@ -28,7 +28,7 @@ import {
   FaQuestionCircle,
   FaCommentAlt,
   FaInfoCircle,
-  FaLightbulb,
+  FaLightbulb
 } from "react-icons/fa";
 
 interface PanelItemProps {
@@ -44,12 +44,10 @@ const PanelItem = ({ name, title, description }: PanelItemProps) => {
         <Icon as={name} boxSize={6} color="#485363" />
       </Box>
       <Box mx={4} width="140px">
-        <Skeleton isLoaded>
-          <Heading fontSize="16px">{title}</Heading>
-          <Text fontSize="14px" color="gray.500" isTruncated>
-            {description}
-          </Text>
-        </Skeleton>
+        <Heading fontSize="16px">{title}</Heading>
+        <Text fontSize="14px" color="gray.500" isTruncated>
+          {description}
+        </Text>
       </Box>
       <Box>
         <Icon as={FaAngleRight} boxSize={6} color="#485363" />
@@ -57,6 +55,59 @@ const PanelItem = ({ name, title, description }: PanelItemProps) => {
     </Flex>
   );
 };
+
+interface SettingsData {
+  name: As;
+  title: string;
+  description: string;
+}
+
+const data: SettingsData[] = [
+  {
+    name: FaUser,
+    title: "Account",
+    description: "Profile, security, activity, account"
+  },
+
+  {
+    name: FaCog,
+    title: "General settings",
+    description: "Site language, notifications"
+  },
+  {
+    name: FaLock,
+    title: "Privacy",
+    description: "Mentions, visibility, data"
+  },
+
+  {
+    name: FaUser,
+    title: "Feed preferences",
+    description: "Languages, blocked users"
+  },
+
+  { name: FaGlobeAmericas, title: "Language", description: "Language" },
+
+  {
+    name: FaQuestionCircle,
+    title: "Help & support",
+    description: "FAQ, privacy policy"
+  },
+
+  { name: FaCommentAlt, title: "Feedback", description: "Contact us" },
+
+  {
+    name: FaInfoCircle,
+    title: "About lobox",
+    description: "Anyone on or off lobox"
+  },
+
+  {
+    name: FaLightbulb,
+    title: "Dark mode",
+    description: "Anyone on or off lobox"
+  }
+];
 
 interface SettingsPanelProps {
   isOpen: ReturnType<typeof useDisclosure>["isOpen"];
@@ -67,70 +118,23 @@ interface SettingsPanelProps {
 const SettingsPanel = ({
   isOpen,
   onClose,
-  finalFocusRef,
+  finalFocusRef
 }: SettingsPanelProps) => {
-  interface SettingsData {
-    name: As;
-    title: string;
-    description: string;
-  }
+  const [apiData, setApiData] = useState<SettingsData[]>(
+    Array.from({ length: data.length })
+  );
 
-  const data: any = [
-    {
-      name: FaUser,
-      title: "Account",
-      description: "Profile, security, activity, account",
-    },
-
-    {
-      name: FaCog,
-      title: "General settings",
-      description: "Site language, notifications",
-    },
-    {
-      name: FaLock,
-      title: "Privacy",
-      description: "Mentions, visibility, data",
-    },
-
-    {
-      name: FaUser,
-      title: "Feed preferences",
-      description: "Languages, blocked users",
-    },
-
-    { name: FaGlobeAmericas, title: "Language", description: "Language" },
-
-    {
-      name: FaQuestionCircle,
-      title: "Help & support",
-      description: "FAQ, privacy policy",
-    },
-
-    { name: FaCommentAlt, title: "Feedback", description: "Contact us" },
-
-    {
-      name: FaInfoCircle,
-      title: "About lobox",
-      description: "Anyone on or off lobox",
-    },
-
-    {
-      name: FaLightbulb,
-      title: "Dark mode",
-      description: "Anyone on or off lobox",
-    },
-  ];
-
-  const [apidata, setApiData] = useState({ data: [] });
   useEffect(() => {
-    const delay = setTimeout(() => {
-      setApiData(data);
-      console.log("This will wait until api data is loaded.");
-    }, 1000);
+    if (isOpen) {
+      const delay = setTimeout(() => {
+        setApiData(data);
+        console.log("This will wait until api data is loaded.");
+      }, 3000);
 
-    return () => clearTimeout(delay);
-  }, []);
+      return () => clearTimeout(delay);
+    }
+  }, [isOpen]);
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -143,13 +147,32 @@ const SettingsPanel = ({
           <DrawerCloseButton />
           <DrawerHeader>Manage your lobox</DrawerHeader>
           <DrawerBody>
-            {data.map((settingsItems: any) => (
-              <PanelItem
-                name={settingsItems.name}
-                title={settingsItems.title}
-                description={settingsItems.description}
-              />
-            ))}
+            {apiData.map((settingsItem, index) => {
+              if (settingsItem) {
+                return (
+                  <PanelItem
+                    name={settingsItem.name}
+                    title={settingsItem.title}
+                    description={settingsItem.description}
+                    key={settingsItem.title}
+                  />
+                );
+              }
+
+              return (
+                <Flex p={2} my={4} align="center" alignContent="space-between">
+                  <Box>
+                    <Skeleton boxSize={6} />
+                  </Box>
+                  <Box mx={4} width="140px">
+                    <SkeletonText fontSize="16px" />
+                  </Box>
+                  <Box>
+                    <Skeleton boxSize={6} />
+                  </Box>
+                </Flex>
+              );
+            })}
           </DrawerBody>
           <DrawerFooter></DrawerFooter>
         </DrawerContent>
